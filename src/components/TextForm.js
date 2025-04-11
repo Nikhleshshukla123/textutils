@@ -1,69 +1,122 @@
 import React, { useState } from 'react';
 
-export default function TextForm(props) {
-    const [text, setText] = useState('');
+/**
+ * A functional component that renders a text form with various text manipulation options.
+ *
+ * @param {object} props - The component's props.
+ * @param {string} props.heading - The heading of the text form.
+ * @returns {JSX.Element} The text form component.
+ */
+export default function TextForm({ heading }) {
+  const [text, setText] = useState('');
 
-    const handleUpClick = () => {
-        setText(text.toUpperCase());
-    };
+  // Handlers
+  const handleUpClick = () => {
+    setText(text.toUpperCase());
+  };
 
-    const handleLoClick = () => {
-        setText(text.toLowerCase());
-    };
+  const handleLoClick = () => {
+    setText(text.toLowerCase());
+  };
 
-    const handleClearClick = () => {
-        setText('');
-    };
+  const handleClearClick = () => {
+    setText('');
+  };
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(text);
-    };
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text);
+  };
 
-    const handleExtraSpaces = () => {
-        let newText = text.split(/[ ]+/).join(" ");
-        setText(newText);
-    };
+  const handleExtraSpaces = () => {
+    const newText = text.split(/\s+/).join(' ');
+    setText(newText);
+  };
 
-    const handleOnChange = (event) => {
-        setText(event.target.value);
-    };
+  const handleOnChange = (event) => {
+    setText(event.target.value);
+  };
 
-    return (
-        <>
-            <div className="container my-5 p-4 shadow rounded bg-white">
-                <h1 className="mb-4 fw-bold text-center">{props.heading}</h1>
-                <div className="form-floating mb-4">
-                    <textarea
-                        className="form-control border-primary shadow-sm"
-                        id="myBox"
-                        value={text}
-                        onChange={handleOnChange}
-                        rows="8"
-                        placeholder="Start typing or paste your text here..."
-                        style={{ resize: 'none' }}
-                    ></textarea>
-                    <label htmlFor="myBox">Enter text to analyze</label>
-                </div>
+  // Word count & reading time
+  const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+  const charCount = text.length;
+  const readTime = (wordCount * 0.008).toFixed(2); // ~125 wpm
 
-                <div className="d-flex flex-wrap gap-2 justify-content-center">
-                    <button className="btn btn-outline-primary shadow" onClick={handleUpClick}>🔠 Uppercase</button>
-                    <button className="btn btn-outline-primary shadow" onClick={handleLoClick}>🔡 Lowercase</button>
-                    <button className="btn btn-outline-danger shadow" onClick={handleClearClick}>❌ Clear</button>
-                    <button className="btn btn-outline-success shadow" onClick={handleCopy}>📋 Copy</button>
-                    <button className="btn btn-outline-secondary shadow" onClick={handleExtraSpaces}>🔍 Remove Spaces</button>
-                </div>
-            </div>
+  return (
+    <div className="container mt-5">
+      <h2 className="text-center fw-bold mb-4">{heading}</h2>
 
-            <div className="container my-5 p-4 bg-light rounded shadow-sm">
-                <h2 className="fw-bold">📝 Text Summary</h2>
-                <p><strong>{text.split(/\s+/).filter((e) => e.length !== 0).length}</strong> words and <strong>{text.length}</strong> characters</p>
-                <p>Estimated Read Time: <strong>{(0.008 * text.split(/\s+/).filter((e) => e.length !== 0).length).toFixed(2)} mins</strong></p>
+      {/* Textarea Box */}
+      <div className="mb-4">
+        <textarea
+          className="form-control shadow-sm border border-primary rounded"
+          id="myBox"
+          rows="8"
+          value={text}
+          onChange={handleOnChange}
+          placeholder="Start typing or paste your text here..."
+          style={{ resize: 'none' }}
+        />
+      </div>
 
-                <h3 className="mt-4">🔎 Preview</h3>
-                <p className="border p-3 bg-white rounded">
-                    {text.length > 0 ? text : "Nothing to preview! Start typing above."}
-                </p>
-            </div>
-        </>
-    );
+      {/* Button Controls */}
+      <div className="d-flex flex-wrap gap-2 mb-4 justify-content-center">
+        <button
+          disabled={text.length === 0}
+          className="btn btn-primary shadow"
+          onClick={handleUpClick}
+        >
+          🔠 Uppercase
+        </button>
+        <button
+          disabled={text.length === 0}
+          className="btn btn-primary shadow"
+          onClick={handleLoClick}
+        >
+          🔡 Lowercase
+        </button>
+        <button
+          disabled={text.length === 0}
+          className="btn btn-secondary shadow"
+          onClick={handleExtraSpaces}
+        >
+          🧹 Remove Spaces
+        </button>
+        <button
+          disabled={text.length === 0}
+          className="btn btn-success shadow"
+          onClick={handleCopy}
+        >
+          📋 Copy
+        </button>
+        <button
+          disabled={text.length === 0}
+          className="btn btn-danger shadow"
+          onClick={handleClearClick}
+        >
+          ❌ Clear
+        </button>
+      </div>
+
+      {/* Summary Section */}
+      <div className="bg-light p-4 rounded shadow-sm mb-4">
+        <h4 className="fw-semibold mb-3">📝 Text Summary</h4>
+        <p>
+          <strong>{wordCount}</strong> words and <strong>{charCount}</strong> characters
+        </p>
+        <p>Estimated Read Time: <strong>{readTime}</strong> minute(s)</p>
+      </div>
+
+      {/* Preview Section */}
+      <div className="bg-white p-4 rounded shadow border">
+        <h4 className="fw-semibold mb-3">🔎 Preview</h4>
+        <p style={{ whiteSpace: 'pre-wrap' }}>
+          {text.length > 0 ? (
+            text
+          ) : (
+            <em className="text-muted">Nothing to preview! Enter some text above 👆</em>
+          )}
+        </p>
+      </div>
+    </div>
+  );
 }
