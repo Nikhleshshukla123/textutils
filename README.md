@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/62599253-1a45-4780-b3fb-bafbd1647338)
+
 # 📝 TextUtils - React WebApp
 
 **TextUtils** is a simple yet powerful React-based web application that allows users to analyze and manipulate text in various ways. It provides tools to convert text cases, remove extra spaces, copy to clipboard, count words and characters, and estimate reading time.
