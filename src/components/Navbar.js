@@ -1,19 +1,13 @@
+// Navbar.js
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-/**
- * A functional component that renders a navigation bar.
- *
- * @param {object} props - The component's props.
- * @param {string} props.title - The title of the navigation bar.
- * @param {string} props.aboutText - The text for the "About" link.
- * @returns {JSX.Element} The navigation bar component.
- */
 export default function Navbar({ title, aboutText }) {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
       <div className="container-fluid">
-        <a className="navbar-brand fw-bold text-primary" href="/">{title}</a>
+        <Link className="navbar-brand fw-bold text-primary" to="/">{title}</Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -29,14 +23,10 @@ export default function Navbar({ title, aboutText }) {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active fw-semibold" aria-current="page" href="/">
-                Home
-              </a>
+              <Link className="nav-link active fw-semibold" to="/">Home</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link fw-semibold" href="/about">
-                {aboutText}
-              </a>
+              <Link className="nav-link fw-semibold" to="/about">{aboutText}</Link>
             </li>
           </ul>
 
@@ -58,19 +48,10 @@ export default function Navbar({ title, aboutText }) {
 }
 
 Navbar.propTypes = {
-  /**
-   * The title of the navigation bar.
-   */
   title: PropTypes.string.isRequired,
-  /**
-   * The text for the "About" link.
-   */
   aboutText: PropTypes.string.isRequired,
 };
 
-/**
- * Optional fallback props.
- */
 Navbar.defaultProps = {
   title: 'TextUtils',
   aboutText: 'About',
